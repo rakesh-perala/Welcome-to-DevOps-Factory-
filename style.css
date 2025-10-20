@@ -1,161 +1,157 @@
-/* Footer */
-.site-footer {
-    position: fixed;
-    right: 18px;
-    bottom: 12px;
-    z-index: 100;
-    color: #00e676; /* green tech vibe */
-    font-size: 1.05rem;
-    font-family: 'Segoe UI', sans-serif;
-    background: rgba(24,28,42,0.8);
-    padding: 6px 16px;
-    border-radius: 12px 0 12px 12px;
-    box-shadow: 0 2px 8px #0003;
-    letter-spacing: 0.5px;
-    pointer-events: none;
+// Modal logic
+const modal = document.getElementById('name-modal');
+const mainContent = document.getElementById('main-content');
+const greeting = document.getElementById('greeting');
+const wishes = document.getElementById('wishes');
+const usernameInput = document.getElementById('username');
+const submitBtn = document.getElementById('submit-name');
+
+submitBtn.addEventListener('click', showWishes);
+usernameInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') showWishes();
+});
+
+function showWishes() {
+    const name = usernameInput.value.trim();
+    if (!name) {
+        usernameInput.focus();
+        return;
+    }
+
+    modal.style.display = 'none';
+    mainContent.classList.remove('hidden');
+
+    greeting.textContent = `Welcome to DevOps Factory, ${name}! 🚀`;
+    
+    // Motivational DevOps/learning quotes
+    const wishesList = [
+        '💻 Let’s learn together and build amazing pipelines!',
+        '🚀 Keep coding, keep deploying, keep learning!',
+        '🔧 Automation is the key to happiness!',
+        '📚 Every failure is a step closer to mastery!',
+        '🎯 Stay curious, stay consistent, stay DevOps!',
+        '✨ Today’s commits are tomorrow’s deployments!',
+        '⚡ Collaboration + CI/CD = Success!',
+        '🖥️ Code, Build, Test, Deploy, Repeat!',
+        '🌱 Learn, practice, grow, repeat!',
+        '🔥 Passion for DevOps is the fuel for progress!'
+    ];
+
+    const randomWish = wishesList[Math.floor(Math.random() * wishesList.length)];
+    wishes.textContent = randomWish;
+
+    startFireworks(); // Optional fireworks animation
 }
 
-/* Body */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: radial-gradient(ellipse at 50% 40%, #0f111a 70%, #000 100%);
-    min-height: 100vh;
-    overflow: hidden;
+// Fireworks animation (kept from your previous Diwali script)
+function randomColor() {
+    const colors = ['#00ff00', '#00e676', '#00bfa5', '#00c853', '#76ff03', '#b2ff59'];
+    return colors[Math.floor(Math.random() * colors.length)];
 }
 
-/* Modal */
-.modal {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.75); /* dark transparent for focus */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    pointer-events: auto;
-}
+function startFireworks() {
+    const canvas = document.getElementById('fireworks');
+    if (!canvas) return;
 
-.modal-content {
-    background: #121826;
-    padding: 2rem 3rem;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px 0 rgba(0, 230, 118, 0.2), 0 2px 8px 0 rgba(0,0,0,0.1);
-    text-align: center;
-    position: relative;
-    min-width: 320px;
-    max-width: 95vw;
-    animation: popin 0.7s cubic-bezier(.68,-0.55,.27,1.55);
-}
+    const ctx = canvas.getContext('2d');
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
-/* Modal Icons & Titles */
-.festive-modal .diya-icon {
-    font-size: 2.7rem;
-    margin-bottom: 0.5rem;
-    animation: glow 1.5s infinite alternate;
-    display: block;
-}
-.festive-modal .modal-title {
-    font-family: 'Segoe Script', 'Brush Script MT', cursive, sans-serif;
-    color: #00e676;
-    font-size: 2rem;
-    margin-bottom: 0.3rem;
-    letter-spacing: 1px;
-}
-.festive-modal .modal-desc {
-    color: #00bfa5;
-    font-size: 1.1rem;
-    margin-bottom: 1.2rem;
-}
+    let fireworks = [];
+    let particles = [];
 
-/* Inputs & Button */
-.festive-modal #username {
-    margin-bottom: 1.1rem;
-    border: 2px solid #00e676;
-    background: #121826;
-    color: #fff;
-    font-size: 1.15rem;
-    box-shadow: 0 2px 8px #00e67633;
-    transition: border 0.2s, box-shadow 0.2s;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    width: 80%;
-}
-.festive-modal #username:focus {
-    border: 2px solid #00c853;
-    outline: none;
-    box-shadow: 0 2px 12px #00c853aa;
-}
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
 
-.festive-modal #submit-name {
-    background: linear-gradient(90deg, #00e676 0%, #00bfa5 100%);
-    color: #fff;
-    border: none;
-    padding: 0.8rem 2.2rem;
-    border-radius: 10px;
-    font-size: 1.15rem;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 8px #00e67633;
-    margin-bottom: 0.7rem;
-    transition: background 0.2s, transform 0.1s;
-}
-.festive-modal #submit-name:hover {
-    background: linear-gradient(90deg, #00bfa5 0%, #00e676 100%);
-    transform: scale(1.04);
-}
+    function Firework() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height;
+        this.targetY = 150 + Math.random() * (canvas.height / 2 - 150);
+        this.color = randomColor();
+        this.speed = 6 + Math.random() * 2;
+        this.exploded = false;
+    }
 
-/* Emojis inside modal */
-.festive-modal .modal-smiles {
-    margin-top: 0.7rem;
-    font-size: 1.5rem;
-    letter-spacing: 0.2em;
-}
+    Firework.prototype.update = function() {
+        if (!this.exploded) {
+            this.y -= this.speed;
+            if (this.y <= this.targetY) {
+                this.exploded = true;
+                explode(this.x, this.y, this.color);
+            }
+        }
+    };
 
-/* Animations */
-@keyframes popin {
-    0% { transform: scale(0.7); opacity: 0; }
-    80% { transform: scale(1.08); opacity: 1; }
-    100% { transform: scale(1); opacity: 1; }
-}
-@keyframes glow {
-    0% { filter: brightness(1.1) drop-shadow(0 0 8px #00e676); }
-    100% { filter: brightness(1.5) drop-shadow(0 0 18px #00bfa5); }
-}
+    Firework.prototype.draw = function() {
+        if (!this.exploded) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 3, 0, 2 * Math.PI);
+            ctx.fillStyle = this.color;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 10;
+            ctx.fill();
+            ctx.restore();
+        }
+    };
 
-/* Main content after name input */
-#main-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    color: #00e676;
-    text-shadow: 2px 2px 8px #000;
-}
-#main-content.hidden {
-    display: none;
-}
+    function Particle(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.radius = 2 + Math.random() * 2;
+        this.angle = Math.random() * 2 * Math.PI;
+        this.speed = 2 + Math.random() * 4;
+        this.alpha = 1;
+        this.decay = 0.01 + Math.random() * 0.015;
+    }
 
-#greeting {
-    font-size: 3rem;
-    margin: 1rem 0 0.5rem 0;
-    color: #00e676;
-    letter-spacing: 2px;
-}
-#wishes {
-    font-size: 1.7rem;
-    margin-bottom: 2rem;
-    color: #00bfa5;
-}
+    Particle.prototype.update = function() {
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed + 0.5; // gravity
+        this.speed *= 0.98;
+        this.alpha -= this.decay;
+    };
 
-/* Fireworks canvas */
-#fireworks {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 1;
+    Particle.prototype.draw = function() {
+        if (this.alpha > 0) {
+            ctx.save();
+            ctx.globalAlpha = this.alpha;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+            ctx.fillStyle = this.color;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 12;
+            ctx.fill();
+            ctx.restore();
+        }
+    };
+
+    function explode(x, y, color) {
+        for (let i = 0; i < 40 + Math.random() * 20; i++) {
+            particles.push(new Particle(x, y, color));
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (Math.random() < 0.07) fireworks.push(new Firework());
+
+        fireworks.forEach((fw, i) => {
+            fw.update();
+            fw.draw();
+            if (fw.exploded) fireworks.splice(i, 1);
+        });
+
+        particles.forEach((p, i) => {
+            p.update();
+            p.draw();
+            if (p.alpha <= 0) particles.splice(i, 1);
+        });
+
+        requestAnimationFrame(animate);
+    }
+    animate();
 }
